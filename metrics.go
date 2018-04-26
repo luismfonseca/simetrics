@@ -74,9 +74,9 @@ func NewEmpty() *SMetrics {
 	return m
 }
 
-func (m *SMetrics) WithNamespacePrefix(namespaceSuffix string) *SMetrics {
+func (m *SMetrics) WithNamespacePrefix(prefix string) *SMetrics {
 	shallowCopy := *m
-	shallowCopy.opts.namespace += namespaceSuffix
+	shallowCopy.opts.namespace += prefix
 	return &shallowCopy
 }
 
