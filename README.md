@@ -54,16 +54,16 @@ func handleNewDevice() {
 There are some helper functions to periodically track values:
 
 ```
-    // By default, this metric will be emitted every 5s:
-    metric.TrackFuncInt("runtime.num_goroutines", runtime.NumGoroutine)
+// By default, this metric will be emitted every 5s:
+metric.TrackFuncInt("runtime.num_goroutines", runtime.NumGoroutine)
 
-    metric.TrackFuncFloat("db.connection_pool_usage", func() float64 {
-        numOpenConnections := float64(underlyingDB.Stats().OpenConnections)
-        return numOpenConnections / float64(maxOpenConnections)
-    })
+metric.TrackFuncFloat("db.connection_pool_usage", func() float64 {
+    numOpenConnections := float64(underlyingDB.Stats().OpenConnections)
+    return numOpenConnections / float64(maxOpenConnections)
+})
 
 
-    // or if there's a mutable variable:
-    metric.TrackVarInt("producer.state", &prodState)
-    metric.TrackVarFloat("last_seen.timestamp", &lastDevice.timestamp)
+// or if there's a mutable variable:
+metric.TrackVarInt("producer.state", &prodState)
+metric.TrackVarFloat("last_seen.timestamp", &lastDevice.timestamp)
 ```
