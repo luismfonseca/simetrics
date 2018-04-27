@@ -10,7 +10,7 @@ import (
 // Factory method to build `SMetrics` from a config
 func MetricsFromConfig(conf *MetricsConfig, log *logrus.Entry) *SMetrics {
 	mOpts := MetricsOptions{TrackVarsPeriod: conf.TrackVarsPeriod, NamespaceFormat: conf.NamespaceFormat}
-	mBuilder := NewSMetricBuilder(mOpts, sink.FromConfig(conf, log))
+	mBuilder := NewBuilder(mOpts, sink.FromConfig(conf, log))
 
 	m, err := mBuilder.Build()
 	if err != nil {

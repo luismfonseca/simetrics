@@ -42,7 +42,7 @@ func (t TrackingMetric) Stop() {
 }
 
 // Builds a `SMetricsBuilder` so you can call `Build()` to get the built `SMetrics`
-func NewSMetricBuilder(options MetricsOptions, ms sink.MetricsSink) *SMetricsBuilder {
+func NewBuilder(options MetricsOptions, ms sink.MetricsSink) *SMetricsBuilder {
 	if options.TrackVarsPeriod == 0 {
 		options.TrackVarsPeriod = 5 * time.Second
 	}
@@ -70,7 +70,7 @@ func (mb *SMetricsBuilder) Build() (*SMetrics, error) {
 
 // Returns a SMetrics instance that doesn't do anything. Function always succeeds.
 func NewEmpty() *SMetrics {
-	m, _ := NewSMetricBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{}).Build() // we know error will always be `nil`
+	m, _ := NewBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{}).Build() // we know error will always be `nil`
 	return m
 }
 

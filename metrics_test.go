@@ -84,13 +84,13 @@ func (msm MetricsSinkMock) ReportDistribution(name string, value float64) {
 func TestMetricsBuilder(t *testing.T) {
 	Convey("A SMetricsBuilder", t, func() {
 		Convey("should provide a way to instance it", func() {
-			mb := NewSMetricBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{})
+			mb := NewBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{})
 
 			So(mb, ShouldNotBeNil)
 		})
 
 		Convey("should build SMetrics", func() {
-			mb := NewSMetricBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{})
+			mb := NewBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{})
 
 			m, err := mb.Build()
 			So(err, ShouldBeNil)
@@ -99,7 +99,7 @@ func TestMetricsBuilder(t *testing.T) {
 		})
 
 		Convey("should fail to build SMetrics if it can't Init()", func() {
-			mb := NewSMetricBuilder(MetricsOptions{}, MetricsSinkFailure{})
+			mb := NewBuilder(MetricsOptions{}, MetricsSinkFailure{})
 
 			m, err := mb.Build()
 			So(err, ShouldNotBeNil)
@@ -111,7 +111,7 @@ func TestMetricsBuilder(t *testing.T) {
 func TestMetrics(t *testing.T) {
 	Convey("A SMetrics", t, func() {
 		msMock := MetricsSinkMock{}
-		m, buildErr := NewSMetricBuilder(MetricsOptions{TrackVarsPeriod: 100 * time.Millisecond}, &msMock).Build()
+		m, buildErr := NewBuilder(MetricsOptions{TrackVarsPeriod: 100 * time.Millisecond}, &msMock).Build()
 		So(buildErr, ShouldBeNil)
 		So(m, ShouldNotBeNil)
 
@@ -154,7 +154,7 @@ func TestMetrics(t *testing.T) {
 
 		Convey("should measure the time a function took to execute and forward it to MetricSink", func() {
 			mssl := MetricsSinkStoreLast{}
-			m2, err := NewSMetricBuilder(MetricsOptions{}, &mssl).Build()
+			m2, err := NewBuilder(MetricsOptions{}, &mssl).Build()
 			So(err, ShouldBeNil)
 			So(m2, ShouldNotBeNil)
 
@@ -236,7 +236,7 @@ func TestMetrics(t *testing.T) {
 
 		Convey("should emit metrics namespaced", func() {
 			msMock := MetricsSinkMock{}
-			m, buildErr := NewSMetricBuilder(MetricsOptions{NamespaceFormat: "test."}, &msMock).Build()
+			m, buildErr := NewBuilder(MetricsOptions{NamespaceFormat: "test."}, &msMock).Build()
 			So(buildErr, ShouldBeNil)
 			So(m, ShouldNotBeNil)
 
@@ -252,7 +252,7 @@ func TestMetrics(t *testing.T) {
 
 		Convey("should allow the creation of new metrics namespaced with a prefix", func() {
 			msMock := MetricsSinkMock{}
-			m, buildErr := NewSMetricBuilder(MetricsOptions{NamespaceFormat: "test."}, &msMock).Build()
+			m, buildErr := NewBuilder(MetricsOptions{NamespaceFormat: "test."}, &msMock).Build()
 			So(buildErr, ShouldBeNil)
 			So(m, ShouldNotBeNil)
 			m2 := m.WithNamespacePrefix("new-prefix.")
