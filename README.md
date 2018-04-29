@@ -65,7 +65,15 @@ metric.TrackFuncFloat("db.connection_pool_usage", func() float64 {
 })
 
 
-// or if there's a mutable variable:
-metric.TrackVarInt("producer.state", &prodState)
-metric.TrackVarFloat("last_seen.timestamp", &lastDevice.timestamp)
+// You can also stop tracking metrics by storing the return value:
+lastPeriodStartedMetric := metric.TrackFuncInt("aggregator.period_start_seconds_ago", func() int {
+    lastUpdatedTime := time.Unix(enf.agg.periodStartTime, 0)
+
+    return int(time.Since(lastUpdatedTime).Seconds())
+})
+
+defer lastPeriodStartedMetric.Stop()
+
+// Or by stopping all:
+metrics.StopAllTrackingMetrics()
 ```

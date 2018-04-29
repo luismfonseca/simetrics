@@ -122,42 +122,6 @@ func (m *SiMetrics) TimeSince(name string, startTime time.Time) {
 	m.sink.ReportDistribution(m.opts.namespace+name, time.Since(startTime).Seconds()*1000)
 }
 
-// Automatically tracks the value of a variable
-func (m *SiMetrics) TrackVarInt(name string, variable *int) TrackingMetric {
-	ctx, ctxCancelFunc := context.WithCancel(m.ctx)
-
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case <-time.After(m.opts.TrackVarsPeriod):
-				m.Value(name, float64(*variable))
-			}
-		}
-	}()
-
-	return TrackingMetric(ctxCancelFunc)
-}
-
-// Automatically tracks the value of a variable
-func (m *SiMetrics) TrackVarFloat(name string, variable *float64) TrackingMetric {
-	ctx, ctxCancelFunc := context.WithCancel(m.ctx)
-
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case <-time.After(m.opts.TrackVarsPeriod):
-				m.Value(name, *variable)
-			}
-		}
-	}()
-
-	return TrackingMetric(ctxCancelFunc)
-}
-
 // Automatically tracks the result of a function
 func (m *SiMetrics) TrackFuncInt(name string, f func() int) TrackingMetric {
 	ctx, ctxCancelFunc := context.WithCancel(m.ctx)
@@ -194,7 +158,7 @@ func (m *SiMetrics) TrackFuncFloat(name string, f func() float64) TrackingMetric
 	return TrackingMetric(ctxCancelFunc)
 }
 
-// Stops tracking all the variables
-func (m *SiMetrics) StopTrackingVars() {
+// Stops all running tracking metrics
+func (m *SiMetrics) StopAllTrackingMetrics() {
 	m.ctxCancelFunc()
 }

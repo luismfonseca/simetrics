@@ -170,31 +170,6 @@ func TestMetrics(t *testing.T) {
 			So(mssl.GetLastDistribution(), ShouldBeBetween, 100, 110)
 		})
 
-		Convey("should keep track of a var", func() {
-			myInt := 1
-			myFloat := 1.2
-			msMock.OnReportValue("myInt", 1).Return().Once()
-			msMock.OnReportValue("myInt", 2).Return().Once()
-			msMock.OnReportValue("myFloat", 1.2).Return().Once()
-			msMock.OnReportValue("myFloat", 7.3).Return().Once()
-
-			intCancelFunc := m.TrackVarInt("myInt", &myInt)
-			floatTracking := m.TrackVarFloat("myFloat", &myFloat)
-			<-time.After(50 * time.Millisecond) // give it a head-start
-
-			<-time.After(m.opts.TrackVarsPeriod)
-			myInt = 2
-			myFloat = 7.3
-			<-time.After(m.opts.TrackVarsPeriod)
-
-			Convey("and it should be cancelable", func() {
-				intCancelFunc()
-				floatTracking.Stop()
-				<-time.After(m.opts.TrackVarsPeriod)
-				// The mock would cause an exception if there was an unexpected call
-			})
-		})
-
 		Convey("should keep track of a function result", func() {
 			myInt := 1
 			myFloat := 1.2
@@ -218,20 +193,6 @@ func TestMetrics(t *testing.T) {
 				<-time.After(m.opts.TrackVarsPeriod)
 				// The mock would cause an exception if there was an unexpected call
 			})
-		})
-
-		Convey("should stop keeping track of vars", func() {
-			myInt := 1
-			myFloat := 1.2
-			m.TrackVarInt("myInt", &myInt)
-			m.TrackVarFloat("myFloat", &myFloat)
-
-			<-time.After(50 * time.Millisecond) // give it a head-start
-
-			m.StopTrackingVars()
-
-			<-time.After(m.opts.TrackVarsPeriod)
-			// it would panic here if it tried to report as the mock isn't expecting any calls
 		})
 
 		Convey("should emit metrics namespaced", func() {
