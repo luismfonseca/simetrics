@@ -106,7 +106,7 @@ func (m *SiMetrics) Distribution(name string, value float64) {
 	}
 }
 
-// Executes the function while measuring the time (ms) it takes to be executed
+// Measures the time in ms since the given `startTime`
 // Example usage:
 // ```
 // tStart := time.Now()
