@@ -12,10 +12,10 @@ Initializing the library:
 ```
 metric := simetrics.NewEmpty()
 if libratoToken != "" {
-	metric := simetrics.MetricsFromConfig(
-		&metricsconfig.MetricsConfig{
+	metric := simetrics.FromConfig(
+		&config.MetricsConfig{
 			Backend: "librato",
-			Librato: &metricsconfig.MetricsLibratoConfig{
+			Librato: &metrics.MetricsLibratoConfig{
 				Email:        "email@somewhere.com",
 				Token:        libratoToken,
 				Namespace:    "product-a",

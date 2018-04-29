@@ -1,14 +1,10 @@
-package metricsconfig
+package config
 
 import (
 	"time"
 )
 
-type MetricsStaggerConfig struct {
-	Address string `mapstructure:"address"`
-}
-
-type MetricsLibratoConfig struct {
+type LibratoConfig struct {
 	Email        string `mapstructure:"email"`
 	Token        string `mapstructure:"token"`
 	Namespace    string `mapstructure:"namespace"`
@@ -16,9 +12,8 @@ type MetricsLibratoConfig struct {
 }
 
 type MetricsConfig struct {
-	Backend         string                `mapstructure:"backend"`
-	Stagger         *MetricsStaggerConfig `mapstructure:"stagger"`
-	Librato         *MetricsLibratoConfig `mapstructure:"librato"`
-	NamespaceFormat string                `mapstructure:"namespace-format"`
-	TrackVarsPeriod time.Duration         `mapstructure:"track-vars-period"` // defaults to 5s
+	Backend         string         `mapstructure:"backend"`
+	Librato         *LibratoConfig `mapstructure:"librato"`
+	NamespaceFormat string         `mapstructure:"namespace-format"`
+	TrackVarsPeriod time.Duration  `mapstructure:"track-vars-period"` // defaults to 5s
 }
