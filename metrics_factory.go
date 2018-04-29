@@ -1,14 +1,14 @@
-package smetrics
+package simetrics
 
 import (
 	"github.com/sirupsen/logrus"
 
-	. "github.com/luismfonseca/smetrics/config"
-	"github.com/luismfonseca/smetrics/sink"
+	. "github.com/luismfonseca/simetrics/config"
+	"github.com/luismfonseca/simetrics/sink"
 )
 
-// Factory method to build `SMetrics` from a config
-func MetricsFromConfig(conf *MetricsConfig, log *logrus.Entry) *SMetrics {
+// Factory method to build `SiMetrics` from a config
+func MetricsFromConfig(conf *MetricsConfig, log *logrus.Entry) *SiMetrics {
 	mOpts := MetricsOptions{TrackVarsPeriod: conf.TrackVarsPeriod, NamespaceFormat: conf.NamespaceFormat}
 	mBuilder := NewBuilder(mOpts, sink.FromConfig(conf, log))
 

@@ -1,4 +1,4 @@
-package smetrics
+package simetrics
 
 import (
 	"math"
@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/luismfonseca/smetrics/sink"
+	"github.com/luismfonseca/simetrics/sink"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/mock"
 )
@@ -82,14 +82,14 @@ func (msm MetricsSinkMock) ReportDistribution(name string, value float64) {
 }
 
 func TestMetricsBuilder(t *testing.T) {
-	Convey("A SMetricsBuilder", t, func() {
+	Convey("A SiMetricsBuilder", t, func() {
 		Convey("should provide a way to instance it", func() {
 			mb := NewBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{})
 
 			So(mb, ShouldNotBeNil)
 		})
 
-		Convey("should build SMetrics", func() {
+		Convey("should build SiMetrics", func() {
 			mb := NewBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{})
 
 			m, err := mb.Build()
@@ -98,7 +98,7 @@ func TestMetricsBuilder(t *testing.T) {
 			So(m.ctx, ShouldNotBeNil)
 		})
 
-		Convey("should fail to build SMetrics if it can't Init()", func() {
+		Convey("should fail to build SiMetrics if it can't Init()", func() {
 			mb := NewBuilder(MetricsOptions{}, MetricsSinkFailure{})
 
 			m, err := mb.Build()
@@ -109,7 +109,7 @@ func TestMetricsBuilder(t *testing.T) {
 }
 
 func TestMetrics(t *testing.T) {
-	Convey("A SMetrics", t, func() {
+	Convey("A SiMetrics", t, func() {
 		msMock := MetricsSinkMock{}
 		m, buildErr := NewBuilder(MetricsOptions{TrackVarsPeriod: 100 * time.Millisecond}, &msMock).Build()
 		So(buildErr, ShouldBeNil)

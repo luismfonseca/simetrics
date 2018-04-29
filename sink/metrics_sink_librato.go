@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/heroku/go-metrics-librato"
-	"github.com/luismfonseca/smetrics/type/distribution"
+	"github.com/luismfonseca/simetrics/type/distribution"
 	"github.com/sirupsen/logrus"
 )
 

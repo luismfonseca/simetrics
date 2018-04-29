@@ -1,7 +1,7 @@
 package sink
 
 import (
-	. "github.com/luismfonseca/smetrics/config"
+	. "github.com/luismfonseca/simetrics/config"
 	"github.com/sirupsen/logrus"
 )
 

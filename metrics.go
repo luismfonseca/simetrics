@@ -1,4 +1,4 @@
-package smetrics
+package simetrics
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/luismfonseca/smetrics/sink"
+	"github.com/luismfonseca/simetrics/sink"
 )
 
 type MetricsOptions struct {
@@ -23,15 +23,15 @@ type MetricsOptions struct {
 	namespace string
 }
 
-type SMetrics struct {
+type SiMetrics struct {
 	sink          sink.MetricsSink
 	opts          MetricsOptions
 	ctx           context.Context
 	ctxCancelFunc context.CancelFunc
 }
 
-type SMetricsBuilder struct {
-	m SMetrics
+type SiMetricsBuilder struct {
+	m SiMetrics
 }
 
 // A tracking metric that can be stopped.
@@ -41,19 +41,19 @@ func (t TrackingMetric) Stop() {
 	t()
 }
 
-// Builds a `SMetricsBuilder` so you can call `Build()` to get the built `SMetrics`
-func NewBuilder(options MetricsOptions, ms sink.MetricsSink) *SMetricsBuilder {
+// Builds a `SiMetricsBuilder` so you can call `Build()` to get the built `SiMetrics`
+func NewBuilder(options MetricsOptions, ms sink.MetricsSink) *SiMetricsBuilder {
 	if options.TrackVarsPeriod == 0 {
 		options.TrackVarsPeriod = 5 * time.Second
 	}
 
 	ctx, ctxCancelFunc := context.WithCancel(context.Background())
 
-	return &SMetricsBuilder{m: SMetrics{sink: ms, opts: options, ctx: ctx, ctxCancelFunc: ctxCancelFunc}}
+	return &SiMetricsBuilder{m: SiMetrics{sink: ms, opts: options, ctx: ctx, ctxCancelFunc: ctxCancelFunc}}
 }
 
-// Returns a built and fully initialized `SMetrics` or an error
-func (mb *SMetricsBuilder) Build() (*SMetrics, error) {
+// Returns a built and fully initialized `SiMetrics` or an error
+func (mb *SiMetricsBuilder) Build() (*SiMetrics, error) {
 	err := mb.m.sink.Init()
 	if err != nil {
 		return nil, err
@@ -68,39 +68,39 @@ func (mb *SMetricsBuilder) Build() (*SMetrics, error) {
 	return &mb.m, nil
 }
 
-// Returns a SMetrics instance that doesn't do anything. Function always succeeds.
-func NewEmpty() *SMetrics {
+// Returns a SiMetrics instance that doesn't do anything. Function always succeeds.
+func NewEmpty() *SiMetrics {
 	m, _ := NewBuilder(MetricsOptions{}, sink.MetricsSinkEmpty{}).Build() // we know error will always be `nil`
 	return m
 }
 
-func (m *SMetrics) WithNamespacePrefix(prefix string) *SMetrics {
+func (m *SiMetrics) WithNamespacePrefix(prefix string) *SiMetrics {
 	shallowCopy := *m
 	shallowCopy.opts.namespace += prefix
 	return &shallowCopy
 }
 
-func (m *SMetrics) Count(name string, value float64) {
+func (m *SiMetrics) Count(name string, value float64) {
 	if !math.IsNaN(value) {
 		m.sink.ReportCount(m.opts.namespace+name, value)
 	}
 }
 
-func (m *SMetrics) Increment(name string) {
+func (m *SiMetrics) Increment(name string) {
 	m.sink.ReportCount(m.opts.namespace+name, 1.0)
 }
 
-func (m *SMetrics) Decrement(name string) {
+func (m *SiMetrics) Decrement(name string) {
 	m.sink.ReportCount(m.opts.namespace+name, -1.0)
 }
 
-func (m *SMetrics) Value(name string, value float64) {
+func (m *SiMetrics) Value(name string, value float64) {
 	if !math.IsNaN(value) {
 		m.sink.ReportValue(m.opts.namespace+name, value)
 	}
 }
 
-func (m *SMetrics) Distribution(name string, value float64) {
+func (m *SiMetrics) Distribution(name string, value float64) {
 	if !math.IsNaN(value) {
 		m.sink.ReportDistribution(m.opts.namespace+name, value)
 	}
@@ -118,12 +118,12 @@ func (m *SMetrics) Distribution(name string, value float64) {
 // tStart := time.Now()
 // defer metric.TimeSince("name", tStart)
 // ```
-func (m *SMetrics) TimeSince(name string, startTime time.Time) {
+func (m *SiMetrics) TimeSince(name string, startTime time.Time) {
 	m.sink.ReportDistribution(m.opts.namespace+name, time.Since(startTime).Seconds()*1000)
 }
 
 // Automatically tracks the value of a variable
-func (m *SMetrics) TrackVarInt(name string, variable *int) TrackingMetric {
+func (m *SiMetrics) TrackVarInt(name string, variable *int) TrackingMetric {
 	ctx, ctxCancelFunc := context.WithCancel(m.ctx)
 
 	go func() {
@@ -141,7 +141,7 @@ func (m *SMetrics) TrackVarInt(name string, variable *int) TrackingMetric {
 }
 
 // Automatically tracks the value of a variable
-func (m *SMetrics) TrackVarFloat(name string, variable *float64) TrackingMetric {
+func (m *SiMetrics) TrackVarFloat(name string, variable *float64) TrackingMetric {
 	ctx, ctxCancelFunc := context.WithCancel(m.ctx)
 
 	go func() {
@@ -159,7 +159,7 @@ func (m *SMetrics) TrackVarFloat(name string, variable *float64) TrackingMetric 
 }
 
 // Automatically tracks the result of a function
-func (m *SMetrics) TrackFuncInt(name string, f func() int) TrackingMetric {
+func (m *SiMetrics) TrackFuncInt(name string, f func() int) TrackingMetric {
 	ctx, ctxCancelFunc := context.WithCancel(m.ctx)
 
 	go func() {
@@ -177,7 +177,7 @@ func (m *SMetrics) TrackFuncInt(name string, f func() int) TrackingMetric {
 }
 
 // Automatically tracks the result of a function
-func (m *SMetrics) TrackFuncFloat(name string, f func() float64) TrackingMetric {
+func (m *SiMetrics) TrackFuncFloat(name string, f func() float64) TrackingMetric {
 	ctx, ctxCancelFunc := context.WithCancel(m.ctx)
 
 	go func() {
@@ -195,6 +195,6 @@ func (m *SMetrics) TrackFuncFloat(name string, f func() float64) TrackingMetric 
 }
 
 // Stops tracking all the variables
-func (m *SMetrics) StopTrackingVars() {
+func (m *SiMetrics) StopTrackingVars() {
 	m.ctxCancelFunc()
 }

@@ -1,16 +1,18 @@
-# SMetrics
+# SiMetrics
 
-Service Metrics library exposes an interface that makes emitting metrics as simple as doing a log line.
+This library exposes an interface that makes emitting metrics as simple as doing a log line.
 Currently supports Librato as a backend.
+
+SiMetrics? Por supuesto que sí.
 
 ## Examples
 
 Initializing the library:
 
 ```
-metric := smetrics.NewEmpty()
+metric := simetrics.NewEmpty()
 if libratoToken != "" {
-	metric := MetricsFromConfig(
+	metric := simetrics.MetricsFromConfig(
 		&metricsconfig.MetricsConfig{
 			Backend: "librato",
 			Librato: &metricsconfig.MetricsLibratoConfig{
