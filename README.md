@@ -9,7 +9,7 @@ SiMetrics? Por supuesto que sí.
 
 Initializing the library:
 
-```
+```go
 metric := simetrics.NewEmpty()
 if libratoToken != "" {
 	metric := simetrics.FromConfig(
@@ -29,7 +29,7 @@ if libratoToken != "" {
 ```
 
 Primitives:
-```
+```go
 metric.Increment("new_device.error.4xx.invalid_body")
 metric.Decrement("active_connections")
 metric.Count("recipient_fanout", float64(len(recipients)))
@@ -37,13 +37,13 @@ metric.Value("speed", currentSpeed()) // just like a gauge
 ```
 
 Distributions:
-```
+```go
 metric.Distribution("new_device.json_body_size_bytes", float64(len(requestBodyBytes)))
 ```
 
 If you want to time a function:
 
-```
+```go
 func handleNewDevice() {
     timeStart := time.Now()
     defer metric.TimeSince("new_device.latency_ms", timeStart)
@@ -55,7 +55,7 @@ func handleNewDevice() {
 
 There are some helper functions to periodically track values:
 
-```
+```go
 // By default, this metric will be emitted every 5s:
 metric.TrackFuncInt("runtime.num_goroutines", runtime.NumGoroutine)
 
