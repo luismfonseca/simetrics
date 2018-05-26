@@ -1,8 +1,8 @@
 package sink
 
 import (
-	"github.com/sirupsen/logrus"
 	"github.com/luismfonseca/simetrics/simetricsconfig"
+	"github.com/sirupsen/logrus"
 )
 
 func FromConfig(config *simetricsconfig.Config, log *logrus.Entry) MetricsSink {
@@ -16,9 +16,9 @@ func FromConfig(config *simetricsconfig.Config, log *logrus.Entry) MetricsSink {
 			config.Librato.SourceFormat,
 			log,
 		)
-	case "none":
-		fallthrough
-	case "empty":
+	case "stdout":
+		return NewMetricsSinkStdout(log)
+	case "none", "empty":
 		log.WithField("backend", config.Backend).Info("Metrics reporting is explicitly disabled.")
 		return &MetricsSinkEmpty{}
 	default:

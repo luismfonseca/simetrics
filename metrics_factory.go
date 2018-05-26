@@ -3,8 +3,8 @@ package simetrics
 import (
 	"github.com/sirupsen/logrus"
 
-	"github.com/luismfonseca/simetrics/sink"
 	"github.com/luismfonseca/simetrics/simetricsconfig"
+	"github.com/luismfonseca/simetrics/sink"
 )
 
 // Factory method to build `SiMetrics` from a config
