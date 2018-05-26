@@ -44,5 +44,5 @@ func (d *Distribution) Sd() float64 {
 }
 
 func (d *Distribution) String() string {
-	return fmt.Sprintf("Distribution: mean: %.5g, sd: %.5g, min/max: %.5g/%.5g (weight %.5g)", d.Mean(), d.Sd(), d.Min, d.Max, d.N)
+	return fmt.Sprintf("Distribution: mean: %.4g, sd: %.4g, max: %.4g, min: %.4g (weight %.4g)", d.Mean(), d.Sd(), d.Max, d.Min, d.N)
 }
