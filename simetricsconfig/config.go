@@ -1,4 +1,4 @@
-package config
+package simetricsconfig
 
 import (
 	"time"
@@ -11,7 +11,7 @@ type LibratoConfig struct {
 	SourceFormat string `mapstructure:"source-format"` // interpolated with the hostname
 }
 
-type MetricsConfig struct {
+type Config struct {
 	Backend         string         `mapstructure:"backend"`
 	Librato         *LibratoConfig `mapstructure:"librato"`
 	NamespaceFormat string         `mapstructure:"namespace-format"`

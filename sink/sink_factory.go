@@ -1,11 +1,11 @@
 package sink
 
 import (
-	"github.com/luismfonseca/simetrics/config"
 	"github.com/sirupsen/logrus"
+	"github.com/luismfonseca/simetrics/simetricsconfig"
 )
 
-func FromConfig(config *config.MetricsConfig, log *logrus.Entry) MetricsSink {
+func FromConfig(config *simetricsconfig.Config, log *logrus.Entry) MetricsSink {
 	switch config.Backend {
 	case "librato":
 		log.WithField("backend", "librato").Info("Using 'librato' backend for metrics.")
