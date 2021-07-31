@@ -16,6 +16,13 @@ func FromConfig(config *simetricsconfig.Config, log *logrus.Entry) MetricsSink {
 			config.Librato.SourceFormat,
 			log,
 		)
+	case "dogstatsd":
+		log.WithField("backend", "dogtatsd").Info("Using 'dogtatsd' backend for metrics.")
+		return NewMetricsSinkDogStatsD(
+			config.DogStatsD.Address,
+			config.DogStatsD.SourceFormat,
+			log,
+		)
 	case "stdout":
 		return NewMetricsSinkStdout(log)
 	case "none", "empty":
